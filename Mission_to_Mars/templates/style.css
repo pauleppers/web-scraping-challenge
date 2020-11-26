@@ -1,0 +1,53 @@
+
+/* Giving the body the specified background color, adding font sizes for the h1 and h3 elements we'll be using */
+
+.compar {
+  width: 90%;
+  padding: 10px;
+}
+
+.track {
+  width: 60%;
+  padding: 10px;
+  float:left;
+}
+.track-image {
+  width: 80%;
+  padding: 10px;
+}
+
+body {
+  background: #f1f1f1;
+  color: #367c2b;
+  padding: 5px;
+}
+
+a {color: #367c2b;
+  font-size: 25px;
+}
+.navbar {
+  padding: 10px;
+}
+
+h1 {
+  font-size: 80px;
+}
+
+h3 {
+  font-size: 30px;
+  color: red;
+} 
+h5 {
+  padding-top: 30px;
+}
+
+/* Making our navbar li's inline-block elements this makes it so we can have multiple on the same line. Floats could have been used too */
+.navbar li {
+  display: inline-block;
+  padding: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 3px;
+} 
