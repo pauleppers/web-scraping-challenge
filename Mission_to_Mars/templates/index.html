@@ -18,16 +18,17 @@
         <div class="container">
             <div class="text-center">
                 <h1 class="jumbotron">Mission to Mars</h1>
-                <a href= "/scrape">Scrape Mars</a>
+                <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape Mars</a>
             </div>
-            <div class="row">
-                    <h3>Lates Mars News</h3>
-                <div class="row">
-                    <h5>{{mars_dict.title}}</h5>
-                    <p>{{mars_dict.paragraph}}</p>            
-                </div>
-    
+            <div class="row col-sm-12">
+                <h3>Lates Mars News</h3>
             </div>
+            <div style="padding-left: 30px" class="row col-sm-8">
+                <h5>{{mars_dict.title}}</h5>
+                <p>{{mars_dict.paragraph}}</p>            
+            </div>
+
+            
     
             <div class="row">
                 <div class="col-sm-8">
@@ -41,13 +42,18 @@
                     </div>
                 </div>
             </div>
-    
-            {% for hemisphere in hemispheres %}
-            <div>
-                <img src="{{ hemisphere[1] }}" alt ="Mars Hemisphere"/> 
-                <h3>hemisphere[0]</h3>
-            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>Hemispheres of Mars</h3> 
+                </div>
+                {% for hemisphere in mars_dict.hemisphere_image_urls %}
+                <div class="col-sm-6">
+                    <img style="width:80%;" src="{{ hemisphere.img_url}}" alt ="Mars Hemisphere"/> 
+                    <p>{{hemisphere.title}}</p>
+                </div>
             {% endfor %}
+            </div>
+            
         </div>
     </body>
 </html>
