@@ -8,7 +8,7 @@ import time
 
 def scrape():
 
-    # connections to mongo db saving
+    # # connections to mongo db saving
     #  !!! need to run mongo in terminal  !!!!!
     conn = 'mongodb://localhost:27017'
     client = pymongo.MongoClient(conn)   # Define the 'classDB' database in Mongo
@@ -19,19 +19,32 @@ def scrape():
 
     ### 1. NASA Mars News
     # Windows Chrome Browser for use with Splinter/ webpage does not load properly without
-    executable_path = {'executable_path': 'chromedriver.exe'}  # will see a new chrome browser
+    executable_path = {'executable_path': './chromedriver.exe'}  # will see a new chrome browser
     browser = Browser('chrome', **executable_path, headless=False)
     url='https://mars.nasa.gov/news/'
 
-    # Retrieve page with the requests module
-    browser.visit(url)
-    response = browser.html
+    # try-except for when browser does not load fast enough, usually first scrape attempt.
+    try:
+        # Retrieve page with the requests module
+        browser.visit(url)
+        response = browser.html
 
-    # loup through boutiful soup results, parse artiles, make dictionary and enter into database
-    soup = BeautifulSoup(response, 'html.parser')
-    mars_news = soup.find('div', class_= "list_text")  #  class_="content_title")
-    mars_news = mars_news.a.text
-    news_p = soup.find('div', class_="article_teaser_body")
+        # loup through boutiful soup results, parse articles, make dictionary and enter into database
+        soup = BeautifulSoup(response, 'html.parser')
+        mars_news = soup.find('div', class_= "list_text")  #  class_="content_title")
+        mars_news = mars_news.a.text
+        news_p = soup.find('div', class_="article_teaser_body")
+    except:
+        time.sleep(5)
+        browser.visit(url)
+        response = browser.html
+
+        # loup through boutiful soup results, parse articles, make dictionary and enter into database
+        soup = BeautifulSoup(response, 'html.parser')
+        mars_news = soup.find('div', class_= "list_text")  #  class_="content_title")
+        mars_news = mars_news.a.text
+        news_p = soup.find('div', class_="article_teaser_body")
+        
     news_p = news_p.text
     mars_dict = {'title':mars_news,
                 'paragraph':news_p}
@@ -108,13 +121,10 @@ def scrape():
 
     browser.quit()  # close the browser, we are done scraping
 
-    #update dictionary   
-    mars_dict.update({"hemisphere_image_urls" : list_hem})
-
     # mars_dict.update({"hemisphere_image_urls" : list})
     mars_dict.update({"hemisphere_image_urls" : list_hem})
 
-    # add/update existing record with new dictionary using upsert
+    # # Update Data Base with new data in dictionary
     collection.update({}, mars_dict, upsert=True)  # update database
 
     return mars_dict
